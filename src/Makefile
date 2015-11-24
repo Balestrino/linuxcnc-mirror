@@ -715,9 +715,11 @@ EXTRA_CFLAGS := $(filter-out -ffast-math,$(RTFLAGS)) -D__MODULE__ -I$(BASEPWD) -
 	-Wframe-larger-than=2560 -Wno-declaration-after-statement \
 	$(INTEGER_OVERFLOW_FLAGS)
 ifneq ($(KERNELRELEASE),)
-ifeq ($(RTARCH):$(RTAI):$(filter $(RTFLAGS),-msse),x86_64:3:)
-EXTRA_CFLAGS += -msse
-endif
+    ifneq ($(RTAI),)
+        ifeq ($(RTARCH):$(filter $(RTFLAGS),-msse),x86_64:)
+            EXTRA_CFLAGS += -msse
+        endif
+    endif
 endif
 
 ifeq "$(USE_STUBS)" "1"

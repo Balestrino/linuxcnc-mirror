@@ -169,20 +169,6 @@ Load(){
     esac
 }
 
-CheckLoaded(){
-    # this abomination is needed because udev sometimes doesn't
-    # have the device ready for us in time.
-    n=0
-    while [ $n -lt 100 ]; do
-        [ -w $SHM_DEV ] && return 0
-        echo "." 1>&2
-        sleep .1
-        n=$(($n+1))
-    done
-    echo "Can't write to $SHM_DEV - aborting" 1>&2
-    exit 1
-}
-
 Unload(){
     CheckKernel
     case $RTPREFIX in
@@ -233,7 +219,6 @@ case "$CMD" in
   start|load)
 	CheckConfig
 	Load || exit $?
-	CheckLoaded
 	;;
   restart|force-reload)
 	CheckConfig
@@ -241,7 +226,6 @@ case "$CMD" in
 	Unload
 	CheckUnloaded
 	Load || exit $?
-	CheckLoaded
 	;;
   stop|unload)
 	CheckConfig

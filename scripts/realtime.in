@@ -7,6 +7,7 @@
 export LANG=C
 
 PIDOF=@PIDOF@
+UDEVADM=@UDEVADM@
 
 CheckKernel() {
     case "@KERNEL_VERS@" in
@@ -161,6 +162,10 @@ Load(){
         if [ "$DEBUG" != "" ] && [ -w /proc/rtapi/debug ] ; then
             echo "$DEBUG" > /proc/rtapi/debug
         fi
+
+        # Let udev finish setting ownership and permissions on RTAI's newly
+        # created device files.
+        $UDEVADM settle
     esac
 }
 

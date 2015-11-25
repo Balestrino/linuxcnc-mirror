@@ -817,6 +817,12 @@ then
     AC_MSG_ERROR([pidof not found])
 fi
 
+AC_PATH_PROG(UDEVADM, udevadm, "none", $SPATH)
+if test $UDEVADM = "none"
+then
+    AC_MSG_ERROR([udevadm not found])
+fi
+
 AC_PATH_PROG(IPCS, ipcs, "none")
 if test $IPCS = "none"
 then
